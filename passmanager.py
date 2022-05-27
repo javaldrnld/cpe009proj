@@ -21,11 +21,16 @@ def viewall():
         for row in backsql.show():
             tree.insert(parent='', index='end', text='', values=(row[0], row[1], row[2]))
 
+
 # Clea the tree view
 
 def refreshall():
+    """
+    Clear the table of treeview then show the list again
+    """
     cleartable()
     viewall()
+
 
 def cleartable():
     """
@@ -97,6 +102,7 @@ def eraseinfo():
         backsql.deleterecord(value[2])
         refreshall()
 
+
 # Update the records
 
 def updateinfo():
@@ -104,6 +110,7 @@ def updateinfo():
     value = tree.item(selected, 'value')
     backsql.updaterecord(website.get(), username.get(), password.get())
     refreshall()
+
 
 def catch(event):
     website.set('')
@@ -156,7 +163,11 @@ ttk.Button(root, text="Delete", style="danger.TButton", width=21, command=erasei
 ttk.Button(root, text="Show All", width=21, command=viewall).place(x=750, y=540)
 ttk.Button(root, text="Update", width=21, command=updateinfo).place(x=750, y=580)
 
-def catch(event):
+
+def updateselected(event):
+    """
+    Take all selected data then we can fill up
+    """
     website.set('')
     username.set('')
     password.set('')
@@ -170,7 +181,7 @@ def catch(event):
 # Tree View
 # TODO Lagyan ng command para gawing clickable 'yong treeview + navi-view 'yong mga iniinput
 tree = ttk.Treeview(root, height=10, )
-tree['columns'] = ("Website", "User", "Password")
+tree['columns'] = ( "Website", "User", "Password")
 tree.column("#0", width=0, stretch=NO)
 tree.column("Website", width=200, anchor=W)
 tree.column("User", width=200, anchor=W)
@@ -179,7 +190,7 @@ tree.heading("#0", text="")
 tree.heading("Website", text="Website")
 tree.heading("User", text="Email/Username")
 tree.heading("Password", text="Password")
-tree.bind("<ButtonRelease-1>", catch)
+tree.bind("<ButtonRelease-1>", updateselected)
 tree.place(x=100, y=450)
 
 root.mainloop()
