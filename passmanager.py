@@ -15,6 +15,7 @@ from ttkbootstrap import *
 # Show all data from the data base
 
 def viewall():
+    cleartable()
     if backsql.checktable() is False:
         messagebox.showerror("ATTENTION!", "NO INFORMATION FOUND")
     else:
@@ -83,9 +84,12 @@ def savetodb():
     """
     Save all inputted data into database
     """
-    backsql.submit(website.get(), username.get(), password.get())
-    tree.insert(parent='', index='end', text='', values=(website.get(), username.get(), password.get()))
-    clearfields()
+    if (website.get() and username.get() and password.get()) == "":
+        messagebox.showerror("ATTENTION", "NO INPUT!")
+    else:
+        backsql.submit(website.get(), username.get(), password.get())
+        tree.insert(parent='', index='end', text='', values=(website.get(), username.get(), password.get()))
+        clearfields()
 
 
 # Erase record to database
