@@ -3,14 +3,51 @@
     For final project in CPE009
 """
 import random
+import backsql
 import csv
-import tkinter.messagebox
+from tkinter import messagebox
 from tkinter import ttk
 from tkinter import *
 from ttkbootstrap import *
 
+
 # ============================== CRUD ======================================#
 
+# Show all data from the data base
+
+def viewall():
+    if backsql.checktable() is False:
+        messagebox.showerror("ATTENTION!", "NO INFORMATION FOUND")
+    else:
+        for row in backsql.show():
+            tree.insert(parent='', index='end', text='', values=(row[0], row[1], row[2]))
+
+# Clea the tree view
+
+def refreshall():
+    cleartable()
+    viewall()
+
+def cleartable():
+    """
+    Remove all the value in the tree table
+    """
+    for _ in tree.get_children():
+        tree.delete(_)
+
+
+# Clear input fields
+
+def clearfields():
+    """
+    Remove all inputted fields
+    """
+    website.set('')
+    username.set('')
+    password.set('')
+
+
+# Password Generator
 
 def generate():
     """
@@ -35,6 +72,31 @@ def generate():
     ps = "".join(ps_list)
     password.set(ps)
 
+
+# Save to database
+
+def savetodb():
+    """
+    Save all inputted data into database
+    """
+    backsql.submit(website.get(), username.get(), password.get())
+    tree.insert(parent='', index='end', text='', values=(website.get(), username.get(), password.get()))
+    clearfields()
+
+
+# Erase record to database
+
+def eraseinfo():
+    """
+    Delete the record
+    """
+    if backsql.checktable() is False:
+        messagebox.showerror("ATTENTION!", "NO INFORMATION TO BE DELETED")
+    else:
+        selected = tree.focus()
+        value = tree.item(selected, 'value')
+        backsql.deleterecord(value[2])
+        refreshall()
 
 
 # ============================== UI SETUP  =================================#
@@ -70,10 +132,11 @@ ttk.Entry(root, width=50, textvariable=password).place(x=275, y=325)
 
 # Buttons
 # TODO Lagyan ng command 'yong button + delete and show all + refresh
-ttk.Button(root, text="Save to Database", style="success.TButton", width=21).place(x=275, y=375)
-ttk.Button(root, text="Generate Password", style="success.Outline.Tbutton", width=21, command=generate).place(x=440, y=375)
-ttk.Button(root, text="Delete", style="danger.TButton", width=21).place(x=750, y=500)
-ttk.Button(root, text="Show All", width=21).place(x=750, y=540)
+ttk.Button(root, text="Save to Database", style="success.TButton", width=21, command=savetodb).place(x=275, y=375)
+ttk.Button(root, text="Generate Password", style="success.Outline.Tbutton", width=21, command=generate).place(x=440,
+                                                                                                              y=375)
+ttk.Button(root, text="Delete", style="danger.TButton", width=21, command=eraseinfo).place(x=750, y=500)
+ttk.Button(root, text="Show All", width=21, command=viewall).place(x=750, y=540)
 ttk.Button(root, text="Update", width=21).place(x=750, y=580)
 
 # Tree View
@@ -91,5 +154,3 @@ tree.heading("Password", text="Password")
 tree.place(x=100, y=450)
 
 root.mainloop()
-
-trey

@@ -10,7 +10,8 @@ def connect():
     cur = conn.cursor()
 
     # Create a table
-    cur.execute("""CREATE TABLE information(
+    cur.execute("""
+                    CREATE TABLE IF NOT EXISTS information (
                         website text,
                         username text,
                         password text
@@ -69,7 +70,7 @@ def deleterecord(password):
     cur = conn.cursor()
 
     # Delete the record of the data
-    cur.execute("DELETE FROM data WHERE password=(?)", password)
+    cur.execute("DELETE FROM information WHERE password=(?)", (password,))
     conn.commit()
     conn.close()
 
@@ -77,4 +78,9 @@ def deleterecord(password):
 # Create a function that check if the database is empty or not
 
 def checktable():
-    pass
+    if len(show()) == 0:
+        return False
+    else:
+        return True
+
+connect()
