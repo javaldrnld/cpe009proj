@@ -4,13 +4,37 @@
 """
 import random
 import csv
+import tkinter.messagebox
 from tkinter import ttk
 from tkinter import *
 from ttkbootstrap import *
 
 # ============================== CRUD ======================================#
-def save():
-    print()
+
+
+def generate():
+    """
+    It will generate randomise password for the user for desired length of password
+    """
+    digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    alplc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+             'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    alpuc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+             'I', 'J', 'K', 'M', 'N', 'O', 'p', 'Q',
+             'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    symb = ['@', '#', '$', '%', '=', ':', '?', '.', '/', '|',
+            '~', '>', '*', '<']
+
+    password_lcletters = [random.choice(alplc) for _ in range(random.randint(8, 10))]
+    password_ucletters = [random.choice(alpuc) for _ in range(random.randint(8, 10))]
+    password_symbols = [random.choice(symb) for _ in range(random.randint(2, 4))]
+    password_numb = [random.choice(digits) for _ in range(random.randint(2, 4))]
+    ps_list = password_lcletters + password_ucletters + password_numb + password_symbols
+    random.shuffle(ps_list)
+
+    ps = "".join(ps_list)
+    password.set(ps)
+
 
 
 # ============================== UI SETUP  =================================#
@@ -47,14 +71,14 @@ ttk.Entry(root, width=50, textvariable=password).place(x=275, y=325)
 # Buttons
 # TODO Lagyan ng command 'yong button + delete and show all + refresh
 ttk.Button(root, text="Save to Database", style="success.TButton", width=21).place(x=275, y=375)
-ttk.Button(root, text="Generate Password",style ="success.Outline.Tbutton", width=21).place(x=440, y=375)
+ttk.Button(root, text="Generate Password", style="success.Outline.Tbutton", width=21, command=generate).place(x=440, y=375)
 ttk.Button(root, text="Delete", style="danger.TButton", width=21).place(x=750, y=500)
 ttk.Button(root, text="Show All", width=21).place(x=750, y=540)
 ttk.Button(root, text="Update", width=21).place(x=750, y=580)
 
 # Tree View
 # TODO Lagyan ng command para gawing clickable 'yong treeview + navi-view 'yong mga iniinput
-tree = ttk.Treeview(root, height=10,)
+tree = ttk.Treeview(root, height=10, )
 tree['columns'] = ("Website", "User", "Password")
 tree.column("#0", width=0, stretch=NO)
 tree.column("Website", width=200, anchor=W)
@@ -66,6 +90,4 @@ tree.heading("User", text="Email/Username")
 tree.heading("Password", text="Password")
 tree.place(x=100, y=450)
 
-
 root.mainloop()
-
