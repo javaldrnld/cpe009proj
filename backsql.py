@@ -49,4 +49,32 @@ def show():
     conn.close()
     return lst
 
-# C
+
+# Create function to update records
+
+def updaterecord(website, user, password):
+    conn = sqlite3.connect(db)
+    cur = conn.cursor()
+
+    # Update information for website where the password is same
+    cur.execute("UPDATE information SET website=(?), user=(?) WHERE password=(?)", (website, user, password))
+    conn.commit()
+    conn.close()
+
+
+# Create a function to delete records
+
+def deleterecord(password):
+    conn = sqlite3.connect(db)
+    cur = conn.cursor()
+
+    # Delete the record of the data
+    cur.execute("DELETE FROM data WHERE password=(?)", password)
+    conn.commit()
+    conn.close()
+
+
+# Create a function that check if the database is empty or not
+
+def checktable():
+    pass
