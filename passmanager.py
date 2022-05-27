@@ -4,7 +4,6 @@
 """
 import random
 import backsql
-import csv
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter import *
@@ -98,6 +97,24 @@ def eraseinfo():
         backsql.deleterecord(value[2])
         refreshall()
 
+# Update the records
+
+def updateinfo():
+    selected = tree.focus()
+    value = tree.item(selected, 'value')
+    backsql.updaterecord(website.get(), username.get(), password.get())
+    refreshall()
+
+def catch(event):
+    website.set('')
+    username.set('')
+    password.set('')
+    selected = tree.focus()
+    value = tree.item(selected, 'value')
+    website.set(value[0])
+    username.set(value[1])
+    password.set(value[2])
+
 
 # ============================== UI SETUP  =================================#
 
@@ -137,7 +154,18 @@ ttk.Button(root, text="Generate Password", style="success.Outline.Tbutton", widt
                                                                                                               y=375)
 ttk.Button(root, text="Delete", style="danger.TButton", width=21, command=eraseinfo).place(x=750, y=500)
 ttk.Button(root, text="Show All", width=21, command=viewall).place(x=750, y=540)
-ttk.Button(root, text="Update", width=21).place(x=750, y=580)
+ttk.Button(root, text="Update", width=21, command=updateinfo).place(x=750, y=580)
+
+def catch(event):
+    website.set('')
+    username.set('')
+    password.set('')
+    selected = tree.focus()
+    value = tree.item(selected, 'value')
+    website.set(value[0])
+    username.set(value[1])
+    password.set(value[2])
+
 
 # Tree View
 # TODO Lagyan ng command para gawing clickable 'yong treeview + navi-view 'yong mga iniinput
@@ -151,6 +179,7 @@ tree.heading("#0", text="")
 tree.heading("Website", text="Website")
 tree.heading("User", text="Email/Username")
 tree.heading("Password", text="Password")
+tree.bind("<ButtonRelease-1>", catch)
 tree.place(x=100, y=450)
 
 root.mainloop()

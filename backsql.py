@@ -58,7 +58,8 @@ def updaterecord(website, user, password):
     cur = conn.cursor()
 
     # Update information for website where the password is same
-    cur.execute("UPDATE information SET website=(?), user=(?) WHERE password=(?)", (website, user, password))
+    cur.execute("UPDATE information SET website=?, username=(?) WHERE password=(?) ",
+                (website, user, password))
     conn.commit()
     conn.close()
 
