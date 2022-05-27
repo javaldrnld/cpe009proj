@@ -47,17 +47,19 @@ ttk.Entry(root, width=50, textvariable=password).place(x=275, y=325)
 # Buttons
 # TODO Lagyan ng command 'yong button + delete and show all + refresh
 ttk.Button(root, text="Save to Database", style="success.TButton", width=21).place(x=275, y=375)
-ttk.Button(root, text="Update", width=21).place(x=440, y=375)
-ttk.Button(root, text="Delete", style="danger.TButton", width=21).place(x=600, y=500)
+ttk.Button(root, text="Generate Password",style ="success.Outline.Tbutton", width=21).place(x=440, y=375)
+ttk.Button(root, text="Delete", style="danger.TButton", width=21).place(x=750, y=500)
+ttk.Button(root, text="Show All", width=21).place(x=750, y=540)
+ttk.Button(root, text="Update", width=21).place(x=750, y=580)
 
 # Tree View
 # TODO Lagyan ng command para gawing clickable 'yong treeview + navi-view 'yong mga iniinput
 tree = ttk.Treeview(root, height=10,)
 tree['columns'] = ("Website", "User", "Password")
 tree.column("#0", width=0, stretch=NO)
-tree.column("Website", width=160, anchor=W)
-tree.column("User", width=160, anchor=W)
-tree.column("Password", width=160, anchor=W)
+tree.column("Website", width=200, anchor=W)
+tree.column("User", width=200, anchor=W)
+tree.column("Password", width=200, anchor=W)
 tree.heading("#0", text="")
 tree.heading("Website", text="Website")
 tree.heading("User", text="Email/Username")
