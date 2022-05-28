@@ -1,6 +1,6 @@
 import sqlite3
 
-db = "usersystem.db"
+db = "newuserswyste.db"
 
 
 def connect():
@@ -12,9 +12,10 @@ def connect():
     # Create a table
     cur.execute("""
                     CREATE TABLE IF NOT EXISTS information (
+                        person_id integer primary key autoincrement,
                         website text,
                         username text,
-                        password text
+                        password text 
                         )
     """)
 
@@ -31,7 +32,8 @@ def submit(website, user, password):
     cur = conn.cursor()
 
     # One by one execute the information in the table
-    cur.execute("INSERT INTO information VALUES (?,?,?)", (website, user, password))
+    cur.execute("INSERT INTO information VALUES (?,?,?)",
+                (website, user, password,))
 
     conn.commit()
     conn.close()
@@ -58,7 +60,7 @@ def updaterecord(website, user, password):
     cur = conn.cursor()
 
     # Update information for website where the password is same
-    cur.execute("UPDATE information SET website=?, username=(?) WHERE password=(?)",
+    cur.execute("UPDATE information SET website=?, username=(?), password=(?) WHERE person_id=(?)",
                 (website, user, password))
     conn.commit()
     conn.close()

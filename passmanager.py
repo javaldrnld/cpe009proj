@@ -9,20 +9,8 @@ from tkinter import ttk
 from tkinter import *
 from ttkbootstrap import *
 
+
 # ============================== Database ==================================#
-
-# Access database
-# mydb = mysql.connector.connect(
-#     host="localhost",
-#     user="root",
-#     passwd="Bellion_1",
-#     port=3306,
-#     database="userdb"
-# )
-#
-# mycursor = mydb.cursor()
-
-
 # Create a function to send information to database
 def submit(website, username, password):
     mydb = mysql.connector.connect(
@@ -97,6 +85,7 @@ def checkdata():
     else:
         return True
 
+
 # ============================== CRUD ======================================#
 
 # Show all data from the data base
@@ -106,7 +95,7 @@ def viewall():
         messagebox.showerror("ATTENTION!", "NO INFORMATION FOUND")
     else:
         for row in show():
-            tree.insert(parent='', index='end', text='', values=(row[0], row[1], row[2], row[3]))
+            tree.insert(parent='', index='end', text='', values=(row[1], row[2], row[3]))
 
 
 # Clea the tree view
@@ -249,9 +238,9 @@ def updateselected(event):
     password.set('')
     selected = tree.focus()
     value = tree.item(selected, 'value')
-    website.set(value[1])
-    username.set(value[2])
-    password.set(value[3])
+    website.set(value[0])
+    username.set(value[1])
+    password.set(value[2])
 
 
 # Tree View
