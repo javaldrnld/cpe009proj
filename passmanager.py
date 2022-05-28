@@ -47,10 +47,10 @@ def clearfields():
     """
     Remove all inputted fields
     """
-    tag.set('')
+    password.set('')
     website.set('')
     username.set('')
-    password.set('')
+    tag.set('')
 
 
 # Password Generator
@@ -85,11 +85,11 @@ def savetodb():
     """
     Save all inputted data into database
     """
-    if (tag.get() and website.get() and username.get() and password.get()) == "":
+    if (password.get() and website.get() and username.get() and tag.get()) == "":
         messagebox.showerror("ATTENTION", "NO INPUT!")
     else:
-        backsql.submit(tag.get(), website.get(), username.get(), password.get())
-        tree.insert(parent='', index='end', text='', values=(tag.get(), website.get(), username.get(), password.get()))
+        backsql.submit(password.get(), website.get(), username.get(), tag.get())
+        tree.insert(parent='', index='end', text='', values=(password.get(), website.get(), username.get(), tag.get()))
         clearfields()
 
 
@@ -104,7 +104,7 @@ def eraseinfo():
     else:
         selected = tree.focus()
         value = tree.item(selected, 'value')
-        backsql.deleterecord(value[3])
+        backsql.deleterecord(value[0])
         refreshall()
 
 
@@ -113,19 +113,8 @@ def eraseinfo():
 def updateinfo():
     selected = tree.focus()
     value = tree.item(selected, 'value')
-    backsql.updaterecord(tag.get(), website.get(), username.get(), password.get())
+    backsql.updaterecord(password.get(), website.get(), username.get(), tag.get())
     refreshall()
-
-
-def catch(event):
-    website.set('')
-    username.set('')
-    password.set('')
-    selected = tree.focus()
-    value = tree.item(selected, 'value')
-    website.set(value[0])
-    username.set(value[1])
-    password.set(value[2])
 
 
 # ============================== UI SETUP  =================================#
@@ -146,21 +135,21 @@ canvas.create_image(100, 100, image=logo_img)
 canvas.pack()
 
 # Texts
-Label(root, text="ID", font=("Monsterrat", 16)).place(x=165, y=190)
+Label(root, text="Password", font=("Monsterrat", 16)).place(x=135, y=180)
 Label(root, text="Website:", font=("Monsterrat", 16)).place(x=135, y=225)
 Label(root, text="Email/Username:", font=("Monsterrat", 16)).place(x=100, y=275)
-Label(root, text="Password:", font=("Monsterrat", 16)).place(x=135, y=325)
+Label(root, text="ID:", font=("Monsterrat", 16)).place(x=165, y=325)
 
 # Entries
-tag = StringVar()
+password = StringVar()
 website = StringVar()
 username = StringVar()
-password = StringVar()
+tag = StringVar()
 
-ttk.Entry(root, width=50, textvariable=tag).place(x=275, y=190)
+ttk.Entry(root, width=50, textvariable=password).place(x=275, y=180)
 ttk.Entry(root, width=50, textvariable=website).place(x=275, y=225)
 ttk.Entry(root, width=50, textvariable=username).place(x=275, y=275)
-ttk.Entry(root, width=50, textvariable=password).place(x=275, y=325)
+ttk.Entry(root, width=50, textvariable=tag).place(x=275, y=325)
 
 # Buttons
 # TODO Lagyan ng command 'yong button + delete and show all + refresh
@@ -176,32 +165,32 @@ def updateselected(event):
     """
     Take all selected data then we can fill up
     """
-    tag.set('')
+    password.set('')
     website.set('')
     username.set('')
-    password.set('')
+    tag.set('')
     selected = tree.focus()
     value = tree.item(selected, 'value')
-    tag.set(value[0])
+    password.set(value[0])
     website.set(value[1])
     username.set(value[2])
-    password.set(value[3])
+    tag.set(value[3])
 
 
 # Tree View
 # TODO Lagyan ng command para gawing clickable 'yong treeview + navi-view 'yong mga iniinput
 tree = ttk.Treeview(root, height=10, )
-tree['columns'] = ("ID", "Website", "User", "Password")
+tree['columns'] = ("Password", "Website", "User", "ID")
 tree.column("#0", width=0, stretch=NO)
+tree.column("Password", width=180, anchor=W)
+tree.column("Website", width=180, anchor=W)
+tree.column("User", width=180, anchor=W)
 tree.column("ID", width=50, anchor=W)
-tree.column("Website", width=200, anchor=W)
-tree.column("User", width=200, anchor=W)
-tree.column("Password", width=200, anchor=W)
 tree.heading("#0", text="")
-tree.heading("ID", text="ID")
+tree.heading("Password", text="Password")
 tree.heading("Website", text="Website")
 tree.heading("User", text="Email/Username")
-tree.heading("Password", text="Password")
+tree.heading("ID", text="ID")
 tree.bind("<ButtonRelease-1>", updateselected)
 tree.place(x=100, y=450)
 

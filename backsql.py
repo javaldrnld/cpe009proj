@@ -1,6 +1,6 @@
 import sqlite3
 
-db = "Userinformation.db"
+db = "NewUserinformation.db"
 
 
 def connect():
@@ -12,10 +12,10 @@ def connect():
     # Create a table
     cur.execute("""
                     CREATE TABLE IF NOT EXISTS information (
-                        person_id text,
+                        password text,
                         website text,
                         username text,
-                        password text
+                        person_id text
                         )
     """)
 
@@ -27,12 +27,12 @@ def connect():
 
 # Create function to submit in database
 
-def submit(tag, website, user, password):
+def submit(password, website, user, tag):
     conn = sqlite3.connect(db)
     cur = conn.cursor()
 
     # One by one execute the information in the table
-    cur.execute("INSERT INTO information VALUES (?,?,?,?)", (tag, website, user, password))
+    cur.execute("INSERT INTO information VALUES (?,?,?,?)", (password, website, user, tag))
 
     conn.commit()
     conn.close()
@@ -54,12 +54,13 @@ def show():
 
 # Create function to update records
 
-def updaterecord(tag, website, user, password,):
+def updaterecord(password, website, user, tag,):
     conn = sqlite3.connect(db)
     cur = conn.cursor()
 
     # Update information for website where the password is same
-    cur.execute("UPDATE information SET website=(?), username=(?), password=(?) WHERE person_id= 1", (website, user, password))
+    cur.execute("UPDATE information SET password=?, website=(?), username=(?) WHERE person_id=(?) ",
+                (password, website, user, tag))
     conn.commit()
     conn.close()
 
