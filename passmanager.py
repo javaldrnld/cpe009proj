@@ -20,7 +20,7 @@ def viewall():
         messagebox.showerror("ATTENTION!", "NO INFORMATION FOUND")
     else:
         for row in backsql.show():
-            tree.insert(parent='', index='end', text='', values=(row[0], row[1], row[2]))
+            tree.insert(parent='', index='end', text='', values=(row[0], row[1], row[2], row[3]))
 
 
 # Clea the tree view
@@ -47,6 +47,7 @@ def clearfields():
     """
     Remove all inputted fields
     """
+    tag.set('')
     website.set('')
     username.set('')
     password.set('')
@@ -84,11 +85,11 @@ def savetodb():
     """
     Save all inputted data into database
     """
-    if (website.get() and username.get() and password.get()) == "":
+    if (tag.get() and website.get() and username.get() and password.get()) == "":
         messagebox.showerror("ATTENTION", "NO INPUT!")
     else:
-        backsql.submit(website.get(), username.get(), password.get())
-        tree.insert(parent='', index='end', text='', values=(website.get(), username.get(), password.get()))
+        backsql.submit(tag.get(), website.get(), username.get(), password.get())
+        tree.insert(parent='', index='end', text='', values=(tag.get(), website.get(), username.get(), password.get()))
         clearfields()
 
 
@@ -103,7 +104,7 @@ def eraseinfo():
     else:
         selected = tree.focus()
         value = tree.item(selected, 'value')
-        backsql.deleterecord(value[2])
+        backsql.deleterecord(value[3])
         refreshall()
 
 
@@ -112,7 +113,7 @@ def eraseinfo():
 def updateinfo():
     selected = tree.focus()
     value = tree.item(selected, 'value')
-    backsql.updaterecord(website.get(), username.get(), password.get())
+    backsql.updaterecord(tag.get(), website.get(), username.get(), password.get())
     refreshall()
 
 
@@ -145,15 +146,18 @@ canvas.create_image(100, 100, image=logo_img)
 canvas.pack()
 
 # Texts
+Label(root, text="ID", font=("Monsterrat", 16)).place(x=165, y=190)
 Label(root, text="Website:", font=("Monsterrat", 16)).place(x=135, y=225)
 Label(root, text="Email/Username:", font=("Monsterrat", 16)).place(x=100, y=275)
 Label(root, text="Password:", font=("Monsterrat", 16)).place(x=135, y=325)
 
 # Entries
+tag = StringVar()
 website = StringVar()
 username = StringVar()
 password = StringVar()
 
+ttk.Entry(root, width=50, textvariable=tag).place(x=275, y=190)
 ttk.Entry(root, width=50, textvariable=website).place(x=275, y=225)
 ttk.Entry(root, width=50, textvariable=username).place(x=275, y=275)
 ttk.Entry(root, width=50, textvariable=password).place(x=275, y=325)
@@ -172,25 +176,29 @@ def updateselected(event):
     """
     Take all selected data then we can fill up
     """
+    tag.set('')
     website.set('')
     username.set('')
     password.set('')
     selected = tree.focus()
     value = tree.item(selected, 'value')
-    website.set(value[0])
-    username.set(value[1])
-    password.set(value[2])
+    tag.set(value[0])
+    website.set(value[1])
+    username.set(value[2])
+    password.set(value[3])
 
 
 # Tree View
 # TODO Lagyan ng command para gawing clickable 'yong treeview + navi-view 'yong mga iniinput
 tree = ttk.Treeview(root, height=10, )
-tree['columns'] = ( "Website", "User", "Password")
+tree['columns'] = ("ID", "Website", "User", "Password")
 tree.column("#0", width=0, stretch=NO)
+tree.column("ID", width=50, anchor=W)
 tree.column("Website", width=200, anchor=W)
 tree.column("User", width=200, anchor=W)
 tree.column("Password", width=200, anchor=W)
 tree.heading("#0", text="")
+tree.heading("ID", text="ID")
 tree.heading("Website", text="Website")
 tree.heading("User", text="Email/Username")
 tree.heading("Password", text="Password")
