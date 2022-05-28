@@ -3,23 +3,110 @@
     For final project in CPE009
 """
 import random
-import backsql
+import mysql.connector
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter import *
 from ttkbootstrap import *
 
+# ============================== Database ==================================#
+
+# Access database
+# mydb = mysql.connector.connect(
+#     host="localhost",
+#     user="root",
+#     passwd="Bellion_1",
+#     port=3306,
+#     database="userdb"
+# )
+#
+# mycursor = mydb.cursor()
+
+
+# Create a function to send information to database
+def submit(website, username, password):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="Bellion_1",
+        port=3306,
+        database="userdb"
+    )
+
+    mycursor = mydb.cursor()
+    mycursor.execute("INSERT INTO information (website, username, password) VALUES (%s, %s, %s)",
+                     (website, username, password))
+    mydb.commit()
+    mydb.close()
+
+
+# fetch the data in database
+def show():
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="Bellion_1",
+        port=3306,
+        database="userdb"
+    )
+
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT * FROM information")
+
+    lst = mycursor.fetchall()
+    mydb.commit()
+    mydb.close()
+    return lst
+
+
+def updateRecord(website, username, password):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="Bellion_1",
+        port=3306,
+        database="userdb"
+    )
+
+    mycursor = mydb.cursor()
+    mycursor.execute("UPDATE information SET website=?, username=(?), password=(?) WHERE personID=(?)",
+                     (website, username, password))
+
+    mydb.commit()
+    mydb.close()
+
+
+def deleteRecord(password):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="Bellion_1",
+        port=3306,
+        database="userdb"
+    )
+
+    mycursor = mydb.cursor()
+    mycursor.execute("DELETE FROM information WHERE password=(?)", (password,))
+    mydb.commit()
+    mydb.close()
+
+
+def checkdata():
+    if len(show()) == 0:
+        return False
+    else:
+        return True
 
 # ============================== CRUD ======================================#
 
 # Show all data from the data base
 
 def viewall():
-    if backsql.checktable() is False:
+    if checkdata() is False:
         messagebox.showerror("ATTENTION!", "NO INFORMATION FOUND")
     else:
-        for row in backsql.show():
-            tree.insert(parent='', index='end', text='', values=(row[0], row[1], row[2]))
+        for row in show():
+            tree.insert(parent='', index='end', text='', values=(row[0], row[1], row[2], row[3]))
 
 
 # Clea the tree view
@@ -83,7 +170,7 @@ def savetodb():
     """
     Save all inputted data into database
     """
-    backsql.submit(website.get(), username.get(), password.get())
+    submit(website.get(), username.get(), password.get())
     tree.insert(parent='', index='end', text='', values=(website.get(), username.get(), password.get()))
     clearfields()
 
@@ -94,12 +181,12 @@ def eraseinfo():
     """
     Delete the record
     """
-    if backsql.checktable() is False:
+    if checkdata() is False:
         messagebox.showerror("ATTENTION!", "NO INFORMATION TO BE DELETED")
     else:
         selected = tree.focus()
         value = tree.item(selected, 'value')
-        backsql.deleterecord(value[2])
+        deleteRecord(value[3])
         refreshall()
 
 
@@ -108,19 +195,8 @@ def eraseinfo():
 def updateinfo():
     selected = tree.focus()
     value = tree.item(selected, 'value')
-    backsql.updaterecord(website.get(), username.get(), password.get())
+    updateRecord(website.get(), username.get(), password.get())
     refreshall()
-
-
-def catch(event):
-    website.set('')
-    username.set('')
-    password.set('')
-    selected = tree.focus()
-    value = tree.item(selected, 'value')
-    website.set(value[0])
-    username.set(value[1])
-    password.set(value[2])
 
 
 # ============================== UI SETUP  =================================#
@@ -173,20 +249,22 @@ def updateselected(event):
     password.set('')
     selected = tree.focus()
     value = tree.item(selected, 'value')
-    website.set(value[0])
-    username.set(value[1])
-    password.set(value[2])
+    website.set(value[1])
+    username.set(value[2])
+    password.set(value[3])
 
 
 # Tree View
 # TODO Lagyan ng command para gawing clickable 'yong treeview + navi-view 'yong mga iniinput
 tree = ttk.Treeview(root, height=10, )
-tree['columns'] = ("Website", "User", "Password")
+tree['columns'] = ("ID", "Website", "User", "Password")
 tree.column("#0", width=0, stretch=NO)
-tree.column("Website", width=200, anchor=W)
-tree.column("User", width=200, anchor=W)
-tree.column("Password", width=200, anchor=W)
+tree.column("ID", width=50, anchor=W)
+tree.column("Website", width=180, anchor=W)
+tree.column("User", width=180, anchor=W)
+tree.column("Password", width=180, anchor=W)
 tree.heading("#0", text="")
+tree.heading("ID", text="ID")
 tree.heading("Website", text="Website")
 tree.heading("User", text="Email/Username")
 tree.heading("Password", text="Password")
