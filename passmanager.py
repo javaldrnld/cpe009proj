@@ -20,7 +20,8 @@ def viewall():
         messagebox.showerror("ATTENTION!", "NO INFORMATION FOUND")
     else:
         for row in backsql.show():
-            tree.insert(parent='', index='end', text='', values=(row[0], row[1], row[2], row[3]))
+            tree.insert(parent='', index='end', text='', values=((row[0]).replace(row[0], "*" * len(row[0]))
+                                                                 , row[1], row[2], row[3]))
 
 
 # Clea the tree view
@@ -89,7 +90,8 @@ def savetodb():
         messagebox.showerror("ATTENTION", "NO INPUT!")
     else:
         backsql.submit(password.get(), website.get(), username.get(), tag.get())
-        tree.insert(parent='', index='end', text='', values=(password.get(), website.get(), username.get(), tag.get()))
+        tree.insert(parent='', index='end', text='', values=((password.get()).replace(password.get(), "*" * len(password.get()))
+                                                             , website.get(), username.get(), tag.get()))
         clearfields()
 
 
@@ -104,7 +106,7 @@ def eraseinfo():
     else:
         selected = tree.focus()
         value = tree.item(selected, 'value')
-        backsql.deleterecord(value[0])
+        backsql.deleterecord(value[1])
         refreshall()
 
 
