@@ -106,7 +106,7 @@ def eraseinfo():
     else:
         selected = tree.focus()
         value = tree.item(selected, 'value')
-        backsql.deleterecord(value[0])
+        backsql.deleterecord(value[1])
         refreshall()
 
 

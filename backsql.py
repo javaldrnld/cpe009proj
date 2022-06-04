@@ -67,12 +67,12 @@ def updaterecord(password, website, user, tag, ):
 
 # Create a function to delete records
 
-def deleterecord(password):
+def deleterecord(website):
     conn = sqlite3.connect(db)
     cur = conn.cursor()
 
     # Delete the record of the data
-    cur.execute("DELETE FROM information WHERE password=(?)", (password,))
+    cur.execute("DELETE FROM information WHERE website=(?)", (website,))
     conn.commit()
     conn.close()
 
