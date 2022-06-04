@@ -90,7 +90,8 @@ def savetodb():
         messagebox.showerror("ATTENTION", "NO INPUT!")
     else:
         backsql.submit(password.get(), website.get(), username.get(), tag.get())
-        tree.insert(parent='', index='end', text='', values=(password.get(), website.get(), username.get(), tag.get()))
+        tree.insert(parent='', index='end', text='', values=((password.get()).replace(password.get(), "*" * len(password.get())),
+                                                             website.get(), username.get(), tag.get()))
         clearfields()
 
 
