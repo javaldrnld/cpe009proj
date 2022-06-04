@@ -127,12 +127,12 @@ root = Tk()
 style = Style(theme="darkly").master
 root.title("Password Manager")
 root.geometry("1024x740")
-root.iconbitmap("photo/icon2.ico")
+root.iconbitmap("D:\College\First Year\Second Sem\Modular 3\CPE009\Python Project\Final Project\icon2.ico")
 root.resizable(width=FALSE, height=FALSE)
 
 # Logo inside
 canvas = Canvas(height=200, width=200)
-logo_img = PhotoImage(file="photo/smalllogo.png")
+logo_img = PhotoImage(file="D:\College\First Year\Second Sem\Modular 3\CPE009\Python Project\Final Project\smalllogo.png")
 canvas.create_image(100, 100, image=logo_img)
 canvas.pack()
 
@@ -154,7 +154,6 @@ ttk.Entry(root, width=50, textvariable=username).place(x=275, y=275)
 ttk.Entry(root, width=50, textvariable=tag).place(x=275, y=325)
 
 # Buttons
-# TODO Lagyan ng command 'yong button + delete and show all + refresh
 ttk.Button(root, text="Save to Database", style="success.TButton", width=21, command=savetodb).place(x=275, y=375)
 ttk.Button(root, text="Generate Password", style="success.Outline.Tbutton", width=21, command=generate).place(x=440,
                                                                                                               y=375)
@@ -180,7 +179,6 @@ def updateselected(event):
 
 
 # Tree View
-# TODO Lagyan ng command para gawing clickable 'yong treeview + navi-view 'yong mga iniinput
 tree = ttk.Treeview(root, height=10, )
 tree['columns'] = ("Password", "Website", "User", "ID")
 tree.column("#0", width=0, stretch=NO)
