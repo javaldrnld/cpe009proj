@@ -108,6 +108,7 @@ def eraseinfo():
         value = tree.item(selected, 'value')
         backsql.deleterecord(value[1])
         refreshall()
+        clearfields()
 
 
 # Update the records
