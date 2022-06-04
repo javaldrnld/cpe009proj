@@ -20,7 +20,8 @@ def viewall():
         messagebox.showerror("ATTENTION!", "NO INFORMATION FOUND")
     else:
         for row in backsql.show():
-            tree.insert(parent='', index='end', text='', values=(row[0], row[1], row[2], row[3]))
+            tree.insert(parent='', index='end', text='', values=(row[0].replace(row[0], "*" * len(row[0])),
+                                                                 row[1], row[2], row[3]))
 
 
 # Clea the tree view
@@ -115,6 +116,7 @@ def updateinfo():
     value = tree.item(selected, 'value')
     backsql.updaterecord(password.get(), website.get(), username.get(), tag.get())
     refreshall()
+    clearfields()
 
 
 # ============================== UI SETUP  =================================#
@@ -182,10 +184,10 @@ def updateselected(event):
 tree = ttk.Treeview(root, height=10, )
 tree['columns'] = ("Password", "Website", "User", "ID")
 tree.column("#0", width=0, stretch=NO)
-tree.column("Password", width=180, anchor=W)
-tree.column("Website", width=180, anchor=W)
-tree.column("User", width=180, anchor=W)
-tree.column("ID", width=50, anchor=W)
+tree.column("Password", width=180, anchor=CENTER)
+tree.column("Website", width=180, anchor=CENTER)
+tree.column("User", width=180, anchor=CENTER)
+tree.column("ID", width=50, anchor=CENTER)
 tree.heading("#0", text="")
 tree.heading("Password", text="Password")
 tree.heading("Website", text="Website")

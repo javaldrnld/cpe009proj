@@ -54,7 +54,7 @@ def show():
 
 # Create function to update records
 
-def updaterecord(password, website, user, tag,):
+def updaterecord(password, website, user, tag, ):
     conn = sqlite3.connect(db)
     cur = conn.cursor()
 
@@ -84,7 +84,6 @@ def checktable():
         return False
     else:
         return True
-
 
 
 connect()
