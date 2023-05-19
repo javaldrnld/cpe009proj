@@ -129,12 +129,12 @@ root = Tk()
 style = Style(theme="darkly").master
 root.title("Password Manager")
 root.geometry("1024x740")
-root.iconbitmap(r"D:\College\First Year\Second Sem\Modular 3\CPE009\Python Project\Final Project\icon2.ico")
+root.iconbitmap("./photo/icon2.ico")
 root.resizable(width=FALSE, height=FALSE)
 
 # Logo inside
 canvas = Canvas(height=200, width=200)
-logo_img = PhotoImage(file=r"D:\College\First Year\Second Sem\Modular 3\CPE009\Python Project\Final Project\smalllogo.png")
+logo_img = PhotoImage(file="./photo/smalllogo.png")
 canvas.create_image(100, 100, image=logo_img)
 canvas.pack()
 
